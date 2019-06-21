@@ -86,13 +86,28 @@
 /************************************************************************/
 /******/ ({
 
+/***/ "./api_key.js":
+/*!********************!*\
+  !*** ./api_key.js ***!
+  \********************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+const key = 'AIzaSyD0RuIHcxsFDgZPuy2B3Kg_y7XqXaIfNEY'
+
+/***/ }),
+
 /***/ "./src/nuclear.js":
 /*!************************!*\
   !*** ./src/nuclear.js ***!
   \************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _api_key__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../api_key */ "./api_key.js");
+/* harmony import */ var _api_key__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_api_key__WEBPACK_IMPORTED_MODULE_0__);
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -166,12 +181,11 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             
             scriptMap.innerHTML = initMap;
-         
 
             const body = document.getElementsByTagName('body')[0];
             const scriptAPI = document.createElement('script');
             scriptAPI.type = 'text/javascript';
-            scriptAPI.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyD0RuIHcxsFDgZPuy2B3Kg_y7XqXaIfNEY&callback=initMap";
+        scriptAPI.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyD0RuIHcxsFDgZPuy2B3Kg_y7XqXaIfNEY&callback=initMap';
             body.appendChild(scriptAPI);
     })
            

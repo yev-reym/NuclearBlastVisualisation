@@ -1,4 +1,4 @@
-
+import api_key from '../api_key';
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -71,12 +71,11 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             
             scriptMap.innerHTML = initMap;
-         
 
             const body = document.getElementsByTagName('body')[0];
             const scriptAPI = document.createElement('script');
             scriptAPI.type = 'text/javascript';
-            scriptAPI.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyD0RuIHcxsFDgZPuy2B3Kg_y7XqXaIfNEY&callback=initMap";
+        scriptAPI.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyD0RuIHcxsFDgZPuy2B3Kg_y7XqXaIfNEY&callback=initMap';
             body.appendChild(scriptAPI);
     })
            
