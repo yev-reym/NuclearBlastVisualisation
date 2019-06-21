@@ -1,0 +1,27 @@
+{
+  "name": "NuclearBlastVisualisation",
+  "version": "1.0.0",
+  "description": "Look at data for nuclear blasts based on yield of the bomb",
+  "main": "webpack.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack --watch --mode=development"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yev-reym/NuclearBlastVisualisation.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yev-reym/NuclearBlastVisualisation/issues"
+  },
+  "homepage": "https://github.com/yev-reym/NuclearBlastVisualisation#readme",
+  "dependencies": {
+    "webpack": "^4.35.0"
+  },
+  "devDependencies": {
+    "webpack-cli": "^3.3.4"
+  }
+}
