@@ -1,4 +1,5 @@
-import api_key from '../api_key';
+// import * as constants from '../keys';
+import SidePanel from './sidepanel';
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -57,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const long = document.getElementById('scriptMap').getAttribute('data-long');
 
                 var currentLocation = { lat: parseFloat(lat) , lng: parseFloat(long) };
-                debugger
+                // debugger
                 var map = new google.maps.Map(
                     document.getElementById('map'),
                     { zoom: 11, 
@@ -65,24 +66,31 @@ document.addEventListener('DOMContentLoaded', () => {
                     mapTypeControl: true,
                     mapTypeControlOptions: {
                     style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
-                    mapTypeIds: ['roadmap', 'terrain']
+                    mapTypeIds: ['roadmap', 'terrain', 'satellite']
                     } });
-                var marker = new google.maps.Marker({ position: currentLocation, map: map });
+                var marker = new google.maps.Marker({
+                    position: currentLocation,
+                    map: map,
+                    draggable: true,
+                    animation: google.maps.Animation.DROP
+                });
             }
             
             scriptMap.innerHTML = initMap;
 
+        //Make an api request to google maps to get the map access and pass the initMap callback inside of the api request body
+            // debugger
             const body = document.getElementsByTagName('body')[0];
             const scriptAPI = document.createElement('script');
             scriptAPI.type = 'text/javascript';
         scriptAPI.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyD0RuIHcxsFDgZPuy2B3Kg_y7XqXaIfNEY&callback=initMap';
             body.appendChild(scriptAPI);
-    })
-           
-        
 
-    //Make an api request to google maps to get the map access and pass the initMap callback inside of the api request body
+   
+    });
 
+    var side = new SidePanel();
+    side.initYield();
 
     // https://nuclearsecrecy.com/nukemap/
     // http://nuclearweaponarchive.org/Nwfaq/Nfaq5.html#nfaq5.1
@@ -92,4 +100,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // https://developers.google.com/maps/documentation/javascript/examples/layer-data-polygon
 
 
-})
+});
+           
+        
+
+   
+
+
