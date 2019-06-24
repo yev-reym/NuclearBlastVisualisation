@@ -1,5 +1,5 @@
-// import * as constants from '../keys';
 import SidePanel from './sidepanel';
+import Calculator from './calculator';
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -92,6 +92,8 @@ document.addEventListener('DOMContentLoaded', () => {
     var side = new SidePanel();
     side.initYield();
 
+
+
     // https://nuclearsecrecy.com/nukemap/
     // http://nuclearweaponarchive.org/Nwfaq/Nfaq5.html#nfaq5.1
     // https://hackernoon.com/d3-js-and-google-maps-api-in-10-easy-steps-4f258323525b
@@ -99,8 +101,28 @@ document.addEventListener('DOMContentLoaded', () => {
     // https://developers.google.com/maps/documentation/javascript/tutorial
     // https://developers.google.com/maps/documentation/javascript/examples/layer-data-polygon
 
+    //test
+    window.getInfo = function (){
+        return fetch('https://cors-anywhere.herokuapp.com/https://www.osti.gov/api/v1/records/4706703', {
+            method: 'GET', // *GET, POST, PUT, DELETE, etc.
+            // mode: 'cors', // no-cors, cors, *same-origin
+            // cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'omit', // include, *same-origin, omit
+            headers: {
+                'Content-Type': 'application/json',
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            // redirect: 'follow', // manual, *follow, error
+            // referrer: 'no-referrer', // no-referrer, *client
+            // body: JSON.stringify(data), // body data type must match "Content-Type" header
+        })//.then( response => console.log( response.json() ) ); // parses JSON response into native Javascript objects 
+    };
+
+    window.calc = new Calculator();
 
 });
+
+// https://www.fourmilab.ch/etexts/www/effects/eonw_3.pdf#zoom=100
            
         
 

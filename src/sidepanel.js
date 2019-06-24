@@ -1,10 +1,11 @@
-import {bombData} from './data'; 
+import {bombData} from './data/data'; 
 
 
 class SidePanel {
     constructor(){
         this.initYield = this.initYield.bind(this);
         this.whenSelected = this.whenSelected.bind(this);
+        this.initPanel = this.initPanel.bind(this);
     }
 
     initPanel(){
@@ -12,7 +13,6 @@ class SidePanel {
     }
 
     whenSelected(e){
-        debugger
         e.preventDefault();
         const bombInfo = document.getElementById('bombInfo');
 
