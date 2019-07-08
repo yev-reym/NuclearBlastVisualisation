@@ -15,7 +15,7 @@
      <aside class="sidebar">
 
         <header class="heading">
-            <h1 class='title'>BLAST PROJECTOR</h1>
+            <h1 class='title'>Nuclear Impact</h1>
         </header>
 
 
@@ -26,7 +26,8 @@
            
         <section class='yield'>
             <label for="yield">Decide the yield of the bomb [kilotons of TNT].</label>
-            <input type="text" id="yield">
+            <input type="range" id="yield" min='.01' max='200000' step='.01'>
+            <div id="range-value"></div>
             <select id="yieldSelect"></select>
         </section>
 
@@ -34,6 +35,20 @@
 
         <section class='detonator'>
 
+            <label class='airburst-options'>
+                Airburst or Surface Detonation?
+                <label class='option'>
+                    Airburst 
+                    <input type="radio" name="airburst-options" value="true" id='airburst' checked='true'>
+                </label>
+                <label class='option'>
+                    Surface
+                    <input type="radio" name="airburst-options" value="false" id='surface'>
+                </label>
+    
+            </label>
+            
+            <button class='detonator-button' id='detonate'>Detonate Now</button>
         </section>
 
         <footer class='social-media'>

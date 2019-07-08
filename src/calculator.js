@@ -2,8 +2,7 @@ import eq from './data/equations';
 
 class Calculator {
 
-    constructor(bombYield){
-        this.bombYield = parseFloat(bombYield);
+    constructor(){
         this.ambientPressure = 14.7; //normal pressure equal to 1 atm. Units are psi
         this._nLog = this._nLog.bind(this);
     }
@@ -12,6 +11,10 @@ class Calculator {
 
     _mi2km(distMi){
         return distMi* 1.60934;
+    }
+
+    _mi2m(distMi){
+        return distMi * 1.60934 * 1000;
     }
 
     //this function retrieves the right equation based on the id of the equation in the hash, and takes in a log base 
@@ -137,8 +140,6 @@ class Calculator {
                 return 0.04924 * (bombYield**0.4);  //surface
             case (true): 
                 return 0.03788 * (bombYield**0.4);  //airburst
-            default: 
-                return 0.04356 * (bombYield**0.4);  //average
         }
     }
 

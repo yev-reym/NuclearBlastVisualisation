@@ -100,8 +100,7 @@ __webpack_require__.r(__webpack_exports__);
 
 class Calculator {
 
-    constructor(bombYield){
-        this.bombYield = parseFloat(bombYield);
+    constructor(){
         this.ambientPressure = 14.7; //normal pressure equal to 1 atm. Units are psi
         this._nLog = this._nLog.bind(this);
     }
@@ -110,6 +109,10 @@ class Calculator {
 
     _mi2km(distMi){
         return distMi* 1.60934;
+    }
+
+    _mi2m(distMi){
+        return distMi * 1.60934 * 1000;
     }
 
     //this function retrieves the right equation based on the id of the equation in the hash, and takes in a log base 
@@ -235,8 +238,6 @@ class Calculator {
                 return 0.04924 * (bombYield**0.4);  //surface
             case (true): 
                 return 0.03788 * (bombYield**0.4);  //airburst
-            default: 
-                return 0.04356 * (bombYield**0.4);  //average
         }
     }
 
@@ -868,8 +869,6 @@ eq['2-115'].args = [-2.1343121, 5.6948378, -5.7707609, 2.7712520, -0.6206012, 0.
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _sidepanel__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./sidepanel */ "./src/sidepanel.js");
-/* harmony import */ var _calculator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./calculator */ "./src/calculator.js");
-
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -894,7 +893,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // check if geolocation is supported/enabled on current browser
                 const mapOptions = {
                     enableHighAccuracy: true
-                }
+                };
                 navigator.geolocation.getCurrentPosition(
                         success,
                         error,
@@ -911,6 +910,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     window.getPosition = getPosition;
 
+    //  const sidePanel = new SidePanel();
+    //  sidePanel.initPanel();
+
     getPosition().then((coords) => {
 
             const latitude = coords.lat;
@@ -921,7 +923,7 @@ document.addEventListener('DOMContentLoaded', () => {
             scriptMap.type = 'text/javascript';
             scriptMap.id = 'scriptMap';
             scriptMap.setAttribute('data-lat', `${latitude}`);
-            scriptMap.setAttribute('data-long', `${longitude}`)
+            scriptMap.setAttribute('data-long', `${longitude}`);
             head.appendChild(scriptMap);
 
             function initMap() {
@@ -945,6 +947,52 @@ document.addEventListener('DOMContentLoaded', () => {
                     draggable: true,
                     animation: google.maps.Animation.DROP
                 });
+
+
+               
+
+                const drawCircle = (radius, strokeColor, fillColor) => {
+                    let lat = marker.getCurrentPosition().lat();
+                    let lng = marker.getCurrentPosition().long();
+                    center = {lat, lng};
+
+                    new google.maps.Circle({
+                        strokeColor,
+                        strokeOpacity: 0.8,
+                        strokeWeight: 2,
+                        fillColor: fillColor,
+                        fillOpacity: 0.35,
+                        map,
+                        center,
+                        radius
+                    });
+                };
+
+                const sidePanel = new _sidepanel__WEBPACK_IMPORTED_MODULE_0__["default"]();
+                sidePanel.initPanel();
+
+                debugger
+
+                const handleDetonation = () => {
+                    const radii = sidePanel.getRadii();
+                    for (let radius in radii) {
+                        switch(radius){
+                            case fireballRad:
+                                return drawCircle(radii.fireballRad, 'red', 'orange');
+                            case onsetNuclearRadiation500Rem:
+                                return drawCircle(radii.onsetNuclearRadiation500Rem, 'yellow', 'green');
+                            case thermalRadiation3rdDegreeBurns:
+                                return drawCircle(radii.thermalRadiation3rdDegreeBurns, '#f50', 'yellow');
+                            case craterRadius:
+                                return drawCircle(radii.craterRadius, 'black', '#ccc');
+                        }
+                    }
+
+                };
+
+                const detonateButton = document.getElementById('detonate');
+                google.maps.event.addDomListener(detonateButton, 'click', handleDetonation
+                );
             }
             
             scriptMap.innerHTML = initMap;
@@ -954,15 +1002,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const body = document.getElementsByTagName('body')[0];
             const scriptAPI = document.createElement('script');
             scriptAPI.type = 'text/javascript';
-        scriptAPI.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyD0RuIHcxsFDgZPuy2B3Kg_y7XqXaIfNEY&callback=initMap';
+            scriptAPI.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyD0RuIHcxsFDgZPuy2B3Kg_y7XqXaIfNEY&callback=initMap';
             body.appendChild(scriptAPI);
 
-   
+            
     });
 
-    var side = new _sidepanel__WEBPACK_IMPORTED_MODULE_0__["default"]();
-    side.initYield();
-
+    
+ 
 
 
     // https://nuclearsecrecy.com/nukemap/
@@ -972,24 +1019,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // https://developers.google.com/maps/documentation/javascript/tutorial
     // https://developers.google.com/maps/documentation/javascript/examples/layer-data-polygon
 
-    //test
-    window.getInfo = function (){
-        return fetch('https://cors-anywhere.herokuapp.com/https://www.osti.gov/api/v1/records/4706703', {
-            method: 'GET', // *GET, POST, PUT, DELETE, etc.
-            // mode: 'cors', // no-cors, cors, *same-origin
-            // cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-            credentials: 'omit', // include, *same-origin, omit
-            headers: {
-                'Content-Type': 'application/json',
-                // 'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            // redirect: 'follow', // manual, *follow, error
-            // referrer: 'no-referrer', // no-referrer, *client
-            // body: JSON.stringify(data), // body data type must match "Content-Type" header
-        })//.then( response => console.log( response.json() ) ); // parses JSON response into native Javascript objects 
-    };
-
-    window.calc = new _calculator__WEBPACK_IMPORTED_MODULE_1__["default"]();
+  
+    
 
 });
 
@@ -998,6 +1029,22 @@ document.addEventListener('DOMContentLoaded', () => {
         
 
    
+//   //test
+//     window.getInfo = function (){
+//         return fetch('https://cors-anywhere.herokuapp.com/https://www.osti.gov/api/v1/records/4706703', {
+//             method: 'GET', // *GET, POST, PUT, DELETE, etc.
+//             // mode: 'cors', // no-cors, cors, *same-origin
+//             // cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+//             credentials: 'omit', // include, *same-origin, omit
+//             headers: {
+//                 'Content-Type': 'application/json',
+//                 // 'Content-Type': 'application/x-www-form-urlencoded',
+//             },
+//             // redirect: 'follow', // manual, *follow, error
+//             // referrer: 'no-referrer', // no-referrer, *client
+//             // body: JSON.stringify(data), // body data type must match "Content-Type" header
+//         })//.then( response => console.log( response.json() ) ); // parses JSON response into native Javascript objects 
+//     };
 
 
 
@@ -1014,56 +1061,104 @@ document.addEventListener('DOMContentLoaded', () => {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _data_data__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./data/data */ "./src/data/data.js");
+/* harmony import */ var _calculator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./calculator */ "./src/calculator.js");
  
+
 
 
 class SidePanel {
     constructor(){
         this.initYield = this.initYield.bind(this);
         this.whenSelected = this.whenSelected.bind(this);
-        this.initPanel = this.initPanel.bind(this);
+        this.onRangeChange = this.onRangeChange.bind(this);
+        this.initYieldRange = this.initYieldRange.bind(this);
+
+        this.airburst = document.getElementById('airburst');
+        this.surface = document.getElementById('surface');
+        this.bombInfo = document.getElementById('bombInfo');
+        this.yieldRangeValue = document.getElementById('range-value');
+        this.yieldRange = document.getElementById('yield');
+        this.yieldSelect = document.getElementById('yieldSelect');
+        this.detonateButton = document.getElementById('detonate');
+
+
+        this.airburstVal = true; 
+        this.yield = null;
     }
 
     initPanel(){
         this.initYield();
+        this.initYieldRange();
     }
 
     whenSelected(e){
         e.preventDefault();
-        const bombInfo = document.getElementById('bombInfo');
 
-        while (bombInfo.firstChild){
-            bombInfo.removeChild(bombInfo.firstChild);
+        while (this.bombInfo.firstChild){
+            this.bombInfo.removeChild(bombInfo.firstChild);
         }
 
         const bombName = e.target.value;
         const bombObject = _data_data__WEBPACK_IMPORTED_MODULE_0__["bombData"][bombName];
 
+        this.yieldRangeValue.innerText = bombObject.yield;
+        this.yieldRange.value = `${parseFloat(bombObject.yield)}`;
+        this.yield = parseFloat(bombObject.yield);
+
         Object.keys(bombObject).forEach(attr => {
             let newListItem = document.createElement('li');
             newListItem.append(bombObject[attr]);
-            bombInfo.appendChild(newListItem);
+            this.bombInfo.appendChild(newListItem);
         });
         
     }
 
     initYield(){
-        const yieldSelect = document.getElementById('yieldSelect');
         const defaultOption = document.createElement('option');
         defaultOption.text = 'Or choose one that has been tested already.';
         defaultOption.selected = true;
         defaultOption.disabled = true;
         defaultOption.value = null;
-        yieldSelect.appendChild(defaultOption);
+        this.yieldSelect.appendChild(defaultOption);
         const bombs = Object.keys(_data_data__WEBPACK_IMPORTED_MODULE_0__["bombData"]);
+
         bombs.forEach(bomb => {
             let newOption = document.createElement('option');
-            const bombObject = _data_data__WEBPACK_IMPORTED_MODULE_0__["bombData"][bomb]
+            const bombObject = _data_data__WEBPACK_IMPORTED_MODULE_0__["bombData"][bomb];
             newOption.text = bombObject.origin + ' \u21D2 ' + bomb + ' \u21D2 ' + bombObject.yield + ' \u21D2 ' + bombObject.date;
             newOption.value = bomb;
-            yieldSelect.appendChild(newOption);
+            this.yieldSelect.appendChild(newOption);
         });
-        yieldSelect.addEventListener('change', this.whenSelected );
+
+        this.yieldSelect.addEventListener('change', this.whenSelected );
+    }
+
+    onRangeChange(e){
+        const currentValue = e.currentTarget.value;
+        this.yieldRangeValue.innerText = currentValue + " kt [TNT]";
+        this.yield = parseFloat(currentValue);
+    }
+
+    initYieldRange(){
+        this.yieldRangeValue.innerText = this.yieldRange.value + " kt [TNT]";
+        this.yield = this.yieldRange.value;
+        this.yieldRange.addEventListener('input', this.onRangeChange);
+    }
+
+    getRadii(){
+        this.airburstVal = this.airburst.checked;
+        const calculator = new _calculator__WEBPACK_IMPORTED_MODULE_1__["default"]();
+        const radii = {};
+
+        radii.fireballRad = calculator._mi2m(calculator.getFireballRadius(this.yield, this.airburstVal));
+        radii.onsetNuclearRadiation500Rem = calculator._mi2m(calculator.getOnsetNuclearRadiationRadius(this.yield, 500));
+        radii.thermalRadiation3rdDegreeBurns = calculator._mi2m(calculator.getThermalRadiationRadius(this.yield, '_3rd-100', this.airburstVal));
+
+        if (!this.airburstVal) {
+            radii.craterRadius = calculator._mi2m(calculator.getCraterParams(this.yield, 'soil').apparentDiam / 2.0);
+        } 
+
+        return radii;
     }
 
 }

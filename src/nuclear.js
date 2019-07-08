@@ -1,5 +1,4 @@
 import SidePanel from './sidepanel';
-import Calculator from './calculator';
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -23,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // check if geolocation is supported/enabled on current browser
                 const mapOptions = {
                     enableHighAccuracy: true
-                }
+                };
                 navigator.geolocation.getCurrentPosition(
                         success,
                         error,
@@ -40,6 +39,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     window.getPosition = getPosition;
 
+    //  const sidePanel = new SidePanel();
+    //  sidePanel.initPanel();
+
     getPosition().then((coords) => {
 
             const latitude = coords.lat;
@@ -50,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
             scriptMap.type = 'text/javascript';
             scriptMap.id = 'scriptMap';
             scriptMap.setAttribute('data-lat', `${latitude}`);
-            scriptMap.setAttribute('data-long', `${longitude}`)
+            scriptMap.setAttribute('data-long', `${longitude}`);
             head.appendChild(scriptMap);
 
             function initMap() {
@@ -74,6 +76,52 @@ document.addEventListener('DOMContentLoaded', () => {
                     draggable: true,
                     animation: google.maps.Animation.DROP
                 });
+
+
+               
+
+                const drawCircle = (radius, strokeColor, fillColor) => {
+                    let lat = marker.getCurrentPosition().lat();
+                    let lng = marker.getCurrentPosition().long();
+                    center = {lat, lng};
+
+                    new google.maps.Circle({
+                        strokeColor,
+                        strokeOpacity: 0.8,
+                        strokeWeight: 2,
+                        fillColor: fillColor,
+                        fillOpacity: 0.35,
+                        map,
+                        center,
+                        radius
+                    });
+                };
+
+                const sidePanel = new SidePanel();
+                sidePanel.initPanel();
+
+                debugger
+
+                const handleDetonation = () => {
+                    const radii = sidePanel.getRadii();
+                    for (let radius in radii) {
+                        switch(radius){
+                            case fireballRad:
+                                return drawCircle(radii.fireballRad, 'red', 'orange');
+                            case onsetNuclearRadiation500Rem:
+                                return drawCircle(radii.onsetNuclearRadiation500Rem, 'yellow', 'green');
+                            case thermalRadiation3rdDegreeBurns:
+                                return drawCircle(radii.thermalRadiation3rdDegreeBurns, '#f50', 'yellow');
+                            case craterRadius:
+                                return drawCircle(radii.craterRadius, 'black', '#ccc');
+                        }
+                    }
+
+                };
+
+                const detonateButton = document.getElementById('detonate');
+                google.maps.event.addDomListener(detonateButton, 'click', handleDetonation
+                );
             }
             
             scriptMap.innerHTML = initMap;
@@ -83,15 +131,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const body = document.getElementsByTagName('body')[0];
             const scriptAPI = document.createElement('script');
             scriptAPI.type = 'text/javascript';
-        scriptAPI.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyD0RuIHcxsFDgZPuy2B3Kg_y7XqXaIfNEY&callback=initMap';
+            scriptAPI.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyD0RuIHcxsFDgZPuy2B3Kg_y7XqXaIfNEY&callback=initMap';
             body.appendChild(scriptAPI);
 
-   
+            
     });
 
-    var side = new SidePanel();
-    side.initYield();
-
+    
+ 
 
 
     // https://nuclearsecrecy.com/nukemap/
@@ -101,24 +148,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // https://developers.google.com/maps/documentation/javascript/tutorial
     // https://developers.google.com/maps/documentation/javascript/examples/layer-data-polygon
 
-    //test
-    window.getInfo = function (){
-        return fetch('https://cors-anywhere.herokuapp.com/https://www.osti.gov/api/v1/records/4706703', {
-            method: 'GET', // *GET, POST, PUT, DELETE, etc.
-            // mode: 'cors', // no-cors, cors, *same-origin
-            // cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-            credentials: 'omit', // include, *same-origin, omit
-            headers: {
-                'Content-Type': 'application/json',
-                // 'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            // redirect: 'follow', // manual, *follow, error
-            // referrer: 'no-referrer', // no-referrer, *client
-            // body: JSON.stringify(data), // body data type must match "Content-Type" header
-        })//.then( response => console.log( response.json() ) ); // parses JSON response into native Javascript objects 
-    };
-
-    window.calc = new Calculator();
+  
+    
 
 });
 
@@ -127,5 +158,21 @@ document.addEventListener('DOMContentLoaded', () => {
         
 
    
+//   //test
+//     window.getInfo = function (){
+//         return fetch('https://cors-anywhere.herokuapp.com/https://www.osti.gov/api/v1/records/4706703', {
+//             method: 'GET', // *GET, POST, PUT, DELETE, etc.
+//             // mode: 'cors', // no-cors, cors, *same-origin
+//             // cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+//             credentials: 'omit', // include, *same-origin, omit
+//             headers: {
+//                 'Content-Type': 'application/json',
+//                 // 'Content-Type': 'application/x-www-form-urlencoded',
+//             },
+//             // redirect: 'follow', // manual, *follow, error
+//             // referrer: 'no-referrer', // no-referrer, *client
+//             // body: JSON.stringify(data), // body data type must match "Content-Type" header
+//         })//.then( response => console.log( response.json() ) ); // parses JSON response into native Javascript objects 
+//     };
 
 

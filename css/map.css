@@ -1,13 +1,31 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat:500|Raleway&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Oswald&display=swap');
 
-input, select{
+/* @media only screen and (max-width: 600px){
+    .sidebar{
+        width: 25%
+    }
+} */
+
+#position, select{
     outline: none;
     margin: 20px 0;
     border-radius: 5px;
     border: 1px solid  #e5e234;
     padding: 5px 5px;
     box-shadow: 0px 0px 5px  #e5e234;
+}
+
+select{
+    height: 30px
+}
+
+#yield{
+    outline: none;
+    margin: 20px 0;
+    border-radius: 5px;
+    border: 1px solid  #e5e234;
+    padding: 5px 5px;
 }
 
 label{
@@ -45,6 +63,7 @@ body, html{
     border: 5px solid rgb(0,0,0);
     border-left: 0;
     box-sizing: border-box;
+    overflow-y: scroll;
 }
 
 .heading, .position-set, .yield, .detonator, .social-media, #bombInfo{
@@ -76,4 +95,34 @@ body, html{
 
 #bombInfo {
     font-family: 'Oswald', sans-serif;
+}
+
+.detonator-button{
+    height: 40px;
+    border-radius: 5px;
+    border: 3px solid black;
+    background: #f0f0f0;
+    box-shadow: 0px 0px 5px #e5e234;
+    outline: none;
+    margin-top: 15px;
+}
+
+#range-value{
+    width: 100%;
+    height: 20px;
+    color: #f0f0f0;
+    text-align: center;
+}
+
+.option{
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    justify-content: space-between;
+    width: 60px;
+}
+
+.airburst-options{
+    display: flex;
+    justify-content: space-around;
 }
