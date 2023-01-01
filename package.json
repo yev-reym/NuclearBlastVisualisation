@@ -19,9 +19,9 @@
   },
   "homepage": "https://github.com/yev-reym/NuclearBlastVisualisation#readme",
   "dependencies": {
-    "webpack": "^4.35.0"
+    "webpack": "^5.75.0"
   },
   "devDependencies": {
-    "webpack-cli": "^3.3.4"
+    "webpack-cli": "^5.0.1"
   }
 }
